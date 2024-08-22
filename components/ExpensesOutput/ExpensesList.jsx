@@ -2,7 +2,6 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import ExpenseItem from './ExpenseItem';
 
 const renderExpenseItem = (itemData) => {
-  console.log('from render', { item: itemData.item });
   return <ExpenseItem {...itemData.item} />;
 };
 
