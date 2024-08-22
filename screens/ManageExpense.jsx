@@ -21,7 +21,7 @@ const ManageExpense = ({ route, navigation }) => {
   const editingExpenseId = route.params?.expenseId;
   const isEditing = !!editingExpenseId;
 
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state.expenses);
 
   const deleteExpenseHandler = () => {
     console.log('delete', { state });
