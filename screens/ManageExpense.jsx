@@ -22,9 +22,13 @@ const ManageExpense = ({ route, navigation }) => {
   const editingExpenseId = route.params?.expenseId;
   const isEditing = !!editingExpenseId;
 
-  const dispatch = useDispatch();
-
   const expenses = useSelector((state) => state.expenses);
+
+  const selectedExpense = expenses.find((expense) => {
+    return expense.id === editingExpenseId;
+  });
+
+  const dispatch = useDispatch();
 
   const deleteExpenseHandler = (id) => {
     dispatch(deleteExpense(editingExpenseId));
@@ -33,7 +37,6 @@ const ManageExpense = ({ route, navigation }) => {
   };
 
   const cancelHandler = () => {
-    console.log('cancel', { expenses });
     navigation.goBack();
   };
 
@@ -63,6 +66,7 @@ const ManageExpense = ({ route, navigation }) => {
         onCancel={cancelHandler}
         onSubmit={confirmHandler}
         submitButtonLabel={isEditing ? 'Update' : 'Add'}
+        defaultValues={selectedExpense}
       />
       {isEditing && (
         <View style={styles.deleteContainer}>

@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { DUMMY_EXPENSES } from '../../utils/constants';
-import { sortByDate } from '../../utils/date';
 
 const initialState = DUMMY_EXPENSES;
 
