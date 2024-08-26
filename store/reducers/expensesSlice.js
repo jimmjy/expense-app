@@ -1,30 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { DUMMY_EXPENSES } from '../../utils/constants';
 
-const initialState = {
-  expenses: [],
-};
-
-// add expense
-// remove expense
-// update expense
+const initialState = DUMMY_EXPENSES;
 
 export const expensesSlice = createSlice({
   name: 'expenses',
   initialState,
   reducers: {
-    addExpense: (state) => {
-      console.log(' add', { state });
+    addExpense: (state, action) => {
+      const id = new Date().toString() + Math.random().toString();
+
+      state.push({ ...action.payload, id });
     },
-    removeExpense: (state) => {
-      console.log('remove', { state });
+    deleteExpense: (state, action) => {
+      const updatedState = state.filter((expense) => {
+        return expense.id !== action.payload;
+      });
+
+      return updatedState;
     },
     updateExpense: (state, action) => {
-      console.log('update', { state, action });
+      const updatableExpenseIndex = state.findIndex(
+        (expense) => expense.id === action.payload.id
+      );
+
+      state[updatableExpenseIndex] = { ...action.payload };
     },
   },
 });
 
-export const { addExpense, removeExpense, updateExpense } =
+export const { addExpense, deleteExpense, updateExpense } =
   expensesSlice.actions;
 
 export default expensesSlice.reducer;
