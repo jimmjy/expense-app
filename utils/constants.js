@@ -38,13 +38,13 @@ export const DUMMY_EXPENSES = [
     id: 'e4',
     description: 'A book',
     amount: 14.99,
-    date: new Date('2024-08-22').toISOString(),
+    date: new Date('2024-08-26').toISOString(),
   },
   {
     id: 'e5',
     description: 'Another book',
     amount: 22.59,
-    date: new Date('2024-08-19').toISOString(),
+    date: new Date('2024-08-24').toISOString(),
   },
   {
     id: 'e6',
@@ -68,12 +68,12 @@ export const DUMMY_EXPENSES = [
     id: 'e9',
     description: 'A book',
     amount: 17.99,
-    date: new Date('2024-08-20').toISOString(),
+    date: new Date('2024-08-27').toISOString(),
   },
   {
     id: 'e10',
     description: 'Another book',
     amount: 18.59,
-    date: new Date('2024-08-23').toISOString(),
+    date: new Date('2024-08-26').toISOString(),
   },
 ];

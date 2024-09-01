@@ -1,10 +1,37 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
-import { useSelector } from 'react-redux';
-import { getDateMinusDays, sortByDate } from '../utils/date';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDateMinusDays } from '../utils/date';
+import { useEffect, useState } from 'react';
+import { fetchExpenses } from '../utils/http';
+import LoadingOverlay from '../components/ui/LoadingOverlay';
+
+import { setLocalExpenses } from '../store/reducers/expensesSlice';
+import { setIsLoading } from '../store/reducers/loadingSlice';
+import ErrorOverlay from '../components/ui/ErrorOverlay';
 
 const RecentExpenses = () => {
-  const expenses = useSelector((state) => state.expenses);
+  const { isLoading } = useSelector((state) => state.loading);
+  const { expenses = [] } = useSelector((state) => state.expenses);
+
+  const [error, setError] = useState();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getExpenses = async () => {
+      dispatch(setIsLoading(true));
+      try {
+        const expenses = await fetchExpenses();
+        dispatch(setLocalExpenses(expenses));
+      } catch (error) {
+        console.log(error);
+        setError('Could not fetch expenses!');
+      }
+      dispatch(setIsLoading(false));
+    };
+
+    getExpenses();
+  }, []);
 
   const recentExpenses = expenses.filter((expense) => {
     const today = new Date();
@@ -15,9 +42,15 @@ const RecentExpenses = () => {
     );
   });
 
-  return (
+  if (error && !isLoading) {
+    return <ErrorOverlay message={error} />;
+  }
+
+  return isLoading ? (
+    <LoadingOverlay />
+  ) : (
     <ExpensesOutput
-      expenses={sortByDate(recentExpenses)}
+      expenses={recentExpenses}
       expensesPeriod='Last 7 days'
       fallbackText='No expenses registered for the last 7 days'
     />
