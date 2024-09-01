@@ -1,35 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { DUMMY_EXPENSES } from '../../utils/constants';
-
-const initialState = DUMMY_EXPENSES;
+import { sortByDate } from '../../utils/date';
 
 export const expensesSlice = createSlice({
   name: 'expenses',
-  initialState,
+  initialState: { expenses: [] },
   reducers: {
-    addExpense: (state, action) => {
-      const id = new Date().toString() + Math.random().toString();
-
-      state.push({ ...action.payload, id });
+    setLocalExpenses: (state, action) => {
+      const sortedExpenses = sortByDate(action.payload);
+      state.expenses = sortedExpenses;
     },
-    deleteExpense: (state, action) => {
-      const updatedState = state.filter((expense) => {
+    addLocalExpense: (state, action) => {
+      state.expenses.push({ ...action.payload });
+    },
+    deleteLocalExpense: (state, action) => {
+      const updatedState = state.expenses.filter((expense) => {
         return expense.id !== action.payload;
       });
 
-      return updatedState;
+      state.expenses = updatedState;
     },
-    updateExpense: (state, action) => {
-      const updatableExpenseIndex = state.findIndex(
+    updateLocalExpense: (state, action) => {
+      const updatableExpenseIndex = state.expenses.findIndex(
         (expense) => expense.id === action.payload.id
       );
 
-      state[updatableExpenseIndex] = { ...action.payload };
+      state.expenses[updatableExpenseIndex] = { ...action.payload };
     },
   },
 });
 
-export const { addExpense, deleteExpense, updateExpense } =
-  expensesSlice.actions;
+export const {
+  setLocalExpenses,
+  addLocalExpense,
+  deleteLocalExpense,
+  updateLocalExpense,
+} = expensesSlice.actions;
 
 export default expensesSlice.reducer;

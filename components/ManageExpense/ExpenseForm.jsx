@@ -14,7 +14,7 @@ const ExpenseForm = ({
 }) => {
   const [inputs, setInputs] = useState({
     amount: {
-      value: defaultValues ? defaultValues.amount.toString() : '',
+      value: defaultValues ? defaultValues.amount.toFixed(2).toString() : '',
       isValid: true,
     },
     date: {
